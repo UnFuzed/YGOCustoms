@@ -34,7 +34,7 @@ end
 
 -- Filter for "Vocaloid" cards
 function s.thfilter(c)
-    return c:IsSetCard(0x3939) and c:IsAbleToHand() -- replace 0x1234 with the actual "Vocaloid" set code
+    return c:IsSetCard(0x3939) and c:IsAbleToHand()
 end
 
 -- Target function
