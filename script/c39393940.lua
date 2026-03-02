@@ -62,8 +62,12 @@ function s.atktg(e,c)
     return c:IsFaceup() and c:IsSetCard(0x3939)
 end
 
+function s.countfilter(c)
+    return c:IsFaceup() and c:IsSetCard(0x3939)
+end
+
 function s.atkval(e,c)
-    local g=Duel.GetMatchingGroup(s.atktg,c:GetControler(),LOCATION_MZONE,0,nil)
+    local g=Duel.GetMatchingGroup(s.countfilter,c:GetControler(),LOCATION_MZONE,0,nil)
     return #g * 200
 end
 
