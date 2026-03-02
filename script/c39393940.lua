@@ -59,7 +59,7 @@ end
 -------------------------------------------------
 
 function s.atktg(e,c)
-    return c:IsSetCard(0x3939)
+    return c:IsFaceup() and c:IsSetCard(0x3939)
 end
 
 function s.atkval(e,c)
