@@ -95,7 +95,7 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
     end
 
     Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,
-        LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE)
+        LOCATION_HAND+LOCATION_GRAVE)
 end
 
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
@@ -103,7 +103,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
     local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,
-        LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE,
+        LOCATION_HAND+LOCATION_GRAVE,
         0,1,1,nil,e,tp)
 
     if #g>0 then
