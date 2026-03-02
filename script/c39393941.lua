@@ -11,7 +11,7 @@ local s,id=GetID()
 
 function s.initial_effect(c)
     -- 2 Level 4 monsters
-    XXyz.AddProcedure(c,function(c) return c:IsSetCard(0x3939) end,4,2)
+    Xyz.AddProcedure(c,function(c) return c:IsSetCard(0x3939) end,4,2)
     c:EnableReviveLimit()
 
     -------------------------------------------------
