@@ -42,10 +42,7 @@ end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
     local chain=Duel.GetCurrentChain()
     if chain>0 then
-        local rc=Duel.GetChainInfo(chain,CHAININFO_TRIGGERING_EFFECT):GetHandler()
-        if Duel.NegateActivation(chain) and rc:IsRelateToEffect(nil) then
-            Duel.Destroy(rc,REASON_EFFECT)
-        end
+        Duel.NegateEffect(chain)
     end
     Duel.Draw(tp,4,REASON_EFFECT)
 end
