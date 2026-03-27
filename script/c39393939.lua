@@ -2,16 +2,8 @@
 
 ---@diagnostic disable: undefined-global
 
--- Only for VSCode autocomplete
 if false then
     require("edo_const.constant")
-    require("edo_const.card_counter_constants")
-    require("edo_const.cards_specific_functions")
-    require("edo_const.proc_normal")
-    require("edo_const.proc_fusion")
-    require("edo_const.proc_link")
-    require("edo_const.proc_synchro")
-    require("edo_const.proc_xyz")
 end
 
 local s,id=GetID()
@@ -22,6 +14,12 @@ function s.initial_effect(c)
     e0:SetCode(EFFECT_TRAP_ACT_IN_HAND)
     e0:SetCondition(s.handcon)
     c:RegisterEffect(e0)
+
+    --Activate in set turn (IMPORTANT)
+    local e2=Effect.CreateEffect(c)
+    e2:SetType(EFFECT_TYPE_SINGLE)
+    e2:SetCode(EFFECT_TRAP_ACT_IN_SET_TURN)
+    c:RegisterEffect(e2)
 
     --Activate
     local e1=Effect.CreateEffect(c)
@@ -40,7 +38,7 @@ function s.handcon(e)
 end
 
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
-    return Duel.IsChainNegatable(ev) and (re:IsActiveType(TYPE_MONSTER) or re:IsHasType(EFFECT_TYPE_ACTIVATE))
+    return Duel.IsChainNegatable(ev)
 end
 
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
