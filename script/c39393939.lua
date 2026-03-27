@@ -2,10 +2,6 @@
 
 ---@diagnostic disable: undefined-global
 
-if false then
-    require("edo_const.constant")
-end
-
 local s,id=GetID()
 function s.initial_effect(c)
     --Activate from hand
@@ -19,36 +15,37 @@ function s.initial_effect(c)
     local e1=Effect.CreateEffect(c)
     e1:SetCategory(CATEGORY_NEGATE+CATEGORY_DESTROY+CATEGORY_DRAW)
     e1:SetType(EFFECT_TYPE_ACTIVATE)
-    e1:SetCode(EVENT_CHAINING)
+    e1:SetCode(EVENT_FREE_CHAIN)
+    e1:SetHintTiming(0,TIMINGS_CHECK_MONSTER)
     e1:SetCondition(s.condition)
     e1:SetTarget(s.target)
     e1:SetOperation(s.activate)
     c:RegisterEffect(e1)
 end
 
--- Always allow from hand
 function s.handcon(e)
     return true
 end
 
--- Check if chain can be negated
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
-    return Duel.IsChainNegatable(ev)
+    -- Only allow activation if currently chaining something negatable
+    return Duel.GetCurrentChain()>0 and Duel.IsChainNegatable(Duel.GetCurrentChain())
 end
 
--- Target
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.IsPlayerCanDraw(tp,4) end
-    Duel.SetOperationInfo(0,CATEGORY_NEGATE,eg,1,0,0)
-    Duel.SetOperationInfo(0,CATEGORY_DESTROY,eg,1,0,0)
+    Duel.SetOperationInfo(0,CATEGORY_NEGATE,nil,1,0,0)
+    Duel.SetOperationInfo(0,CATEGORY_DESTROY,nil,1,0,0)
     Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,4)
 end
 
--- Effect
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
-    local rc=re:GetHandler()
-    if Duel.NegateActivation(ev) and rc:IsRelateToEffect(re) then
-        Duel.Destroy(rc,REASON_EFFECT)
+    local chain=Duel.GetCurrentChain()
+    if chain>0 then
+        local rc=Duel.GetChainInfo(chain,CHAININFO_TRIGGERING_EFFECT):GetHandler()
+        if Duel.NegateActivation(chain) and rc:IsRelateToEffect(nil) then
+            Duel.Destroy(rc,REASON_EFFECT)
+        end
     end
     Duel.Draw(tp,4,REASON_EFFECT)
 end
